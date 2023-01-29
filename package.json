@@ -1,0 +1,40 @@
+{
+  "name": "leetcoin-backend",
+  "version": "1.0.0",
+  "description": "## Official open-source repo for LeetCoin project.",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf ./build && tsc",
+    "start:dev": "npx nodemon",
+    "start": "npm run build && node build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeetCoinCo/leetcoin-backend.git"
+  },
+  "author": "NoirKomBatman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LeetCoinCo/leetcoin-backend/issues"
+  },
+  "homepage": "https://github.com/LeetCoinCo/leetcoin-backend#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.16",
+    "@types/node": "^18.11.18",
+    "@types/pg": "^8.6.6",
+    "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/parser": "^5.49.0",
+    "eslint": "^8.32.0",
+    "nodemon": "^2.0.20",
+    "rimraf": "^4.1.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.9.0",
+    "uuid": "^9.0.0"
+  }
+}
