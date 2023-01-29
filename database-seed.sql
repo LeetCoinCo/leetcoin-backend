@@ -11,12 +11,20 @@ BEGIN
 END$$;
 
 DO $$
-    BEGIN
-        IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'code_language') THEN
-            CREATE TYPE code_language AS
-                ENUM('substrate_rust');
-        END IF;
-    END$$;
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'code_language') THEN
+        CREATE TYPE code_language AS
+            ENUM('substrate_rust');
+    END IF;
+END$$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'question_submission_status') THEN
+        CREATE TYPE question_submission_status AS
+            ENUM('failed_to_compile', 'failed_tests', 'pending', 'success');
+    END IF;
+END$$;
 
 CREATE TABLE IF NOT EXISTS questions
 (
@@ -72,6 +80,7 @@ CREATE TABLE IF NOT EXISTS question_submissions
     deleted_at timestamp with time zone,
     submission text,
     language code_language,
+    status
     results jsonb,
     CONSTRAINT FK_question_question_submissions FOREIGN KEY(question_id) REFERENCES questions(id),
     CONSTRAINT FK_user_question_submissions FOREIGN KEY(user_id) REFERENCES users(id)

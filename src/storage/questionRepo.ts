@@ -56,6 +56,7 @@ function mapRecordToQuestionSubmission(record: QueryResultRow): QuestionSubmissi
     const submissionURL = record['submission'];
     const language = record['language'];
     const results = JSON.parse(record['results']);
+    const status = record['status'];
     return {
       id,
       questionId,
@@ -63,6 +64,7 @@ function mapRecordToQuestionSubmission(record: QueryResultRow): QuestionSubmissi
       submissionURL,
       language,
       results,
+      status,
     }
   } catch (error) {
     throw new Error(`Error mapping record to question submission: ${error}`);

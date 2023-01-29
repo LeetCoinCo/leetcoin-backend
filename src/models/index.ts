@@ -39,6 +39,13 @@ export interface QuestionSubmissionResult {
   cases: CaseMap,
 }
 
+export enum QuestionSubmissionStatus {
+  FailedToCompile = 0,
+  FailedTests = 1,
+  Pending = 2,
+  Success = 3,
+}
+
 export interface QuestionSubmission {
   id: string,
   questionId: string,
@@ -46,4 +53,5 @@ export interface QuestionSubmission {
   submissionURL: string,
   language: Language,
   results: QuestionSubmissionResult,
+  status: QuestionSubmissionStatus,
 }
