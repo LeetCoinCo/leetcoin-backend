@@ -30,6 +30,6 @@ export class PsqlDB {
     if (query.length === 0) {
       throw new Error('query can not be empty');
     }
-    return await this.client.query(query, values);
+    return (await this.getClient()).query(query, values);
   }
 }

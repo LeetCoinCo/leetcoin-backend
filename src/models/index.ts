@@ -40,18 +40,28 @@ export interface QuestionSubmissionResult {
 }
 
 export enum QuestionSubmissionStatus {
-  FailedToCompile = 0,
-  FailedTests = 1,
-  Pending = 2,
-  Success = 3,
+  Initial = 0,
+  FailedToCompile = 1,
+  FailedTests = 2,
+  Pending = 3,
+  Success = 4,
+  SystemError = 5,
 }
 
 export interface QuestionSubmission {
   id: string,
   questionId: string,
   userId: string,
-  submissionURL: string,
+  submissionCode: string,
   language: Language,
   results: QuestionSubmissionResult,
   status: QuestionSubmissionStatus,
+}
+
+export enum RunnerStatus {
+  SUCCESS = 0,
+  FAILED_TO_COMPILE = 1,
+  FAILED_TESTS = 2,
+  SYSTEM_ERROR = 3,
+  NO_OP = 4,
 }
