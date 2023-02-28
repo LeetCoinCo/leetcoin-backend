@@ -1,4 +1,4 @@
-import {RunnerStatus} from "../models";
+import {RunnerOutput, RunnerStatus} from "../models";
 
 class Runner {
   private file: string;
@@ -26,9 +26,9 @@ class Runner {
     return this.testFile;
   }
 
-  public async run(file: string, directory: string, filename: string, extension: string): Promise<RunnerStatus> {
-    console.log("run");
-    return RunnerStatus.NO_OP;
+  public async run(file: string, directory: string, filename: string, extension: string): Promise<RunnerOutput> {
+    console.log("[Runner] run");
+    return {status: RunnerStatus.NO_OP, rawOutput: ""};
   }
 }
 

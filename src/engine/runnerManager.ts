@@ -3,8 +3,9 @@ import * as appRoot from "app-root-path";
 import * as FileApi from "../util/fileApi";
 import moment from "moment";
 import {SubstrateRustRunner} from "./substrateRustRunner";
-import {Language, RunnerStatus} from "../models";
+import {Language, RunnerOutput} from "../models";
 import Runner from "./runner";
+import {SolidityRunner} from "./solidityRunner";
 
 
 class Factory {
@@ -12,6 +13,8 @@ class Factory {
     let runner;
     if (lang === Language.SUBSTRATE_RUST) {
       runner = new SubstrateRustRunner();
+    } else if (lang === Language.SOLIDITY) {
+      runner = new SolidityRunner();
     } else {
       runner = new Runner();
     }
@@ -19,11 +22,7 @@ class Factory {
   }
 }
 
-export async function run(
-  question: string,
-  lang: Language,
-  solution: string
-): Promise<RunnerStatus> {
+export async function run(question: string, lang: Language, solution: string): Promise<RunnerOutput> {
   const factory = new Factory();
   const runner = factory.createRunner(lang);
 
@@ -41,7 +40,7 @@ export async function run(
 
   try {
     // copy source code files
-    await FileApi.copyDirectory(path.join(sourceDir, lang.toString()), targetDir);
+    await FileApi.copyDirectory(path.join(sourceDir, mapLanguageToDirectoryName(lang)), targetDir);
 
     const testcaseFile = path.join(targetDir, "testcase.txt");
 
@@ -68,5 +67,14 @@ export async function run(
     console.log(`[engine][run], err: ${err}`)
     throw err;
   }
+}
 
+function mapLanguageToDirectoryName(lang: Language): string {
+  if (lang === Language.SUBSTRATE_RUST) {
+    return "rust";
+  } else if (lang === Language.SOLIDITY) {
+    return "solidity";
+  } else {
+    return "";
+  }
 }

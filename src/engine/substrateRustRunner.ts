@@ -1,6 +1,6 @@
 import spawnAsync from '@expo/spawn-async';
 import Runner from './runner';
-import {RunnerStatus} from "../models";
+import {RunnerOutput, RunnerStatus} from "../models";
 
 export class SubstrateRustRunner extends Runner {
   private readonly defaultFile: string;
@@ -16,10 +16,10 @@ export class SubstrateRustRunner extends Runner {
     this.testFile = "lib.rs";
   }
 
-  public async run(file: string, directory: string, filename: string, extension: string): Promise<RunnerStatus> {
+  public async run(file: string, directory: string, filename: string, extension: string): Promise<RunnerOutput> {
     if (extension.toLowerCase() !== '.rs') {
       console.log(`${file} is not a rust file.`);
-      return RunnerStatus.NO_OP;
+      return {status: RunnerStatus.NO_OP, rawOutput: ''};
     }
     try {
       return await this.compile(file, directory, filename);
@@ -30,12 +30,12 @@ export class SubstrateRustRunner extends Runner {
   }
 
   // compile a Rust file
-  async compile(file: string, directory: string, filename: string): Promise<RunnerStatus> {
+  async compile(file: string, directory: string, filename: string): Promise<RunnerOutput> {
     const options = {cwd: directory};
     try {
       const {stdout, stderr} = await spawnAsync('cargo', ['contract', 'build', '--offline', '--output-json', '--quiet'], options);
       if (stderr !== '') {
-        return RunnerStatus.FAILED_TO_COMPILE;
+        return {status: RunnerStatus.FAILED_TO_COMPILE, rawOutput: stderr};
       }
       console.log(`[substrateRustRunner][compile] stdout: ${stdout}`);
       return await this.execute(directory, filename, options);
@@ -46,18 +46,18 @@ export class SubstrateRustRunner extends Runner {
   }
 
   // execute the compiled file
-  async execute(directory: string, filename: string, options: any): Promise<RunnerStatus> {
+  async execute(directory: string, filename: string, options: any): Promise<RunnerOutput> {
     try {
       const {stdout, stderr} = await spawnAsync('cargo', ['test', '--offline', '--quiet'], options);
       console.log(`[substrateRustRunner][execute] stdout: ${stdout}`);
       if (stderr !== '') {
         console.log(`[substrateRustRunner][execute] stderr: ${stderr}`);
-        return RunnerStatus.FAILED_TESTS;
+        return {status: RunnerStatus.FAILED_TESTS, rawOutput: stderr};
       }
-      return RunnerStatus.SUCCESS;
+      return {status: RunnerStatus.SUCCESS, rawOutput: stdout};
     } catch (err) {
       console.error(`[substrateRustRunner][execute] stderr: ${err}`);
-      return RunnerStatus.SYSTEM_ERROR;
+      return {status: RunnerStatus.SYSTEM_ERROR, rawOutput: JSON.stringify(err)};
     }
   }
 

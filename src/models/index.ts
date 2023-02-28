@@ -6,6 +6,7 @@ export enum QuestionDifficulty {
 
 export enum Language {
   SUBSTRATE_RUST = 0,
+  SOLIDITY = 1,
 }
 
 type CodeMap = Record<Language, string>;
@@ -64,4 +65,9 @@ export enum RunnerStatus {
   FAILED_TESTS = 2,
   SYSTEM_ERROR = 3,
   NO_OP = 4,
+}
+
+export interface RunnerOutput {
+  rawOutput: string,
+  status: RunnerStatus,
 }
