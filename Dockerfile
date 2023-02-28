@@ -15,11 +15,11 @@ WORKDIR /usr/src/app
 
 CMD ["truffle", "version"]
 
-#FROM base as ganache
-#
-#WORKDIR /usr/src/app
-#
-#CMD ["ganache", "--host", "0.0.0.0"]
+FROM base as ganache
+
+WORKDIR /usr/src/app
+
+CMD ["ganache", "--host", "0.0.0.0"]
 
 FROM base as app
 
