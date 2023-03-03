@@ -1,0 +1,84 @@
+version: '3.8'
+services:
+  # These are the configurations for our Node app
+  # When Docker Compose starts this container it will automatically
+  # use the Dockerfile in the directory to configure it
+  app:
+    build:
+      context: .
+      target: app
+    restart: always
+    networks:
+      - app_network
+    image: 192588337168.dkr.ecr.us-east-1.amazonaws.com/leetcoin-backend:latest
+    depends_on:
+      # Our app does not work without our database
+      # so this ensures our database is loaded first
+      - postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      # Maps our current project directory `.` to
+      # our working directory in the container
+      - static_volume:./:/usr/src/app/
+      # node_modules workaround for volumes
+      # https://stackoverflow.com/a/32785014
+#      - /usr/src/app/node_modules
+    environment:
+      PGUSER: root
+      PGDATABASE: root
+      PGPASSWORD: root
+      PGPORT: 5432
+      PGHOST: postgres
+      NETWORK_URL: http://ganache:8545
+      NETWORK_HOST: ganache
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: leetcoin-backend
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: app
+
+  # This is the configuration for our PostgreSQL database container
+  # Note the `postgres` name is important, in out Node app when we refer
+  # to  `host: "postgres"` that value is mapped on the network to the
+  # address of this container.
+  postgres:
+    image: postgres:14.1-alpine
+    restart: always
+    networks:
+      - app_network
+    environment:
+      # You can set the value of environment variables
+      # in your docker-compose.yml file
+      # Our Node app will use these to connect
+      # to the database
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root
+    ports:
+      # Standard port for PostgreSQL databases
+      - "5432:5432"
+    volumes:
+      # When the PostgresSQL container is started it will run any scripts
+      # provided in the `docker-entrypoint-initdb.d` directory, this connects
+      # our seed file to that directory so that it gets run
+      - database_volume:./database-seed.sql:/docker-entrypoint-initdb.d/database-seed.sql
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: leetcoin-backend
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: postgres
+
+  # Ganache blockchain accessible at http://localhost:8545/
+  ganache:
+    image: trufflesuite/ganache
+networks:
+  app_network:
+    name: app_network
+volumes:
+  database_volume:
+    name: app_database_volume
+  static_volume:
+    name: app_static_volumne
