@@ -108,6 +108,16 @@ export async function submissionDemo(req: Request, res: Response) {
         const { code } = req.body;
         let buff = new Buffer(code, 'base64');
         const solution = buff.toString('ascii');
+
+        if (!solution.includes('pragma solidity ^0.8.0;')) {
+            console.error('invalid request: no pragma matching');
+            res.status(400).json({ error: 'invalid request: no pragma matching' });
+        }
+        if (!solution.includes('contract TodoList {')) {
+            console.error('invalid request: no TodoList contract matching');
+            res.status(400).json({ error: 'invalid request: no TodoList contract matching' });
+        }
+
         const language = Language.SOLIDITY;
         const { rawOutput, status } = await run('demo', language, solution);
         res.status(200).json({ rawOutput: filterRawOutput(rawOutput), status });

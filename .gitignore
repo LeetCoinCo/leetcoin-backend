@@ -6,3 +6,7 @@ node_modules/
 .DS_Store
 *.js
 *.js.map
+!hardhat.config.js
+!truffle-config.js
+!test.js
+!1_initial_migration.js

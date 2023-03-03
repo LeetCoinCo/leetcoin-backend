@@ -38,7 +38,7 @@ app.use('/debug', (req, res) => {
     res.send('Hello world!');
 });
 app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
-    yield initDB();
+    // await initDB();
     console.log(`Server started at http://localhost:${port}`);
 }));
 //# sourceMappingURL=index.js.map
