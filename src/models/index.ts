@@ -65,3 +65,8 @@ export enum RunnerStatus {
   SYSTEM_ERROR = 3,
   NO_OP = 4,
 }
+
+export interface RunnerOutput {
+  rawOutput: string,
+  status: RunnerStatus,
+}

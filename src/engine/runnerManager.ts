@@ -3,7 +3,7 @@ import * as appRoot from "app-root-path";
 import * as FileApi from "../util/fileApi";
 import moment from "moment";
 import {SubstrateRustRunner} from "./substrateRustRunner";
-import {Language, RunnerStatus} from "../models";
+import {Language, RunnerOutput} from "../models";
 import Runner from "./runner";
 
 
@@ -23,7 +23,7 @@ export async function run(
   question: string,
   lang: Language,
   solution: string
-): Promise<RunnerStatus> {
+): Promise<RunnerOutput> {
   const factory = new Factory();
   const runner = factory.createRunner(lang);
 
@@ -41,7 +41,7 @@ export async function run(
 
   try {
     // copy source code files
-    await FileApi.copyDirectory(path.join(sourceDir, lang.toString()), targetDir);
+    await FileApi.copyDirectory(path.join(sourceDir, mapLanguageToDirectoryName(lang)), targetDir);
 
     const testcaseFile = path.join(targetDir, "testcase.txt");
 
@@ -68,5 +68,13 @@ export async function run(
     console.log(`[engine][run], err: ${err}`)
     throw err;
   }
+}
 
+
+function mapLanguageToDirectoryName(lang: Language): string {
+  if (lang === Language.SUBSTRATE_RUST) {
+    return "rust";
+  } else {
+    return "";
+  }
 }

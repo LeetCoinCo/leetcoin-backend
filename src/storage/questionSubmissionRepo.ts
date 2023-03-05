@@ -79,12 +79,12 @@ export class QuestionSubmissionRepo {
 }
 
 async function run(questionSubmission: QuestionSubmission, codeSolution: string): Promise<QuestionSubmissionStatus> {
-  const res = await RunnerManager.run(questionSubmission.questionId, questionSubmission.language, codeSolution);
-  if (res === RunnerStatus.SUCCESS) {
+  const {status, rawOutput} = await RunnerManager.run(questionSubmission.questionId, questionSubmission.language, codeSolution);
+  if (status === RunnerStatus.SUCCESS) {
     return QuestionSubmissionStatus.Success;
-  } else if (res === RunnerStatus.FAILED_TESTS) {
+  } else if (status === RunnerStatus.FAILED_TESTS) {
     return QuestionSubmissionStatus.FailedTests;
-  } else if (res === RunnerStatus.FAILED_TO_COMPILE) {
+  } else if (status === RunnerStatus.FAILED_TO_COMPILE) {
     return QuestionSubmissionStatus.FailedToCompile;
   } else {
     return QuestionSubmissionStatus.SystemError;

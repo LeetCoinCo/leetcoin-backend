@@ -1,6 +1,7 @@
 import express from 'express';
 import router from './routes';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import {PsqlDB} from "./storage/db";
 
 dotenv.config(); // loads environment variables from .env file
@@ -19,6 +20,7 @@ async function initDB() {
   }
 }
 
+app.use(cors());
 
 app.use('/api', router);
 
@@ -27,7 +29,7 @@ app.use('/debug', (req, res) => {
   res.send('Hello world!');
 });
 
-app.listen(port, async () => {
+app.listen(process.env.PORT || port, async () => {
   await initDB();
-  console.log(`Server started at http://localhost:${port}`);
+  console.log(`Server started at http://localhost:${process.env.PORT || port}`);
 });
