@@ -1,12 +1,6 @@
-export enum QuestionDifficulty {
-  Easy = 0,
-  Medium = 1,
-  Hard = 3,
-}
+type QuestionDifficulty = 'easy' | 'medium' | 'hard';
 
-export enum Language {
-  SUBSTRATE_RUST = 0,
-}
+export type Language = 'substrate_rust';
 
 type CodeMap = Record<Language, string>;
 
@@ -28,7 +22,7 @@ export interface Question {
 
 export interface Case {
   id: string,
-  difference: string,
+  rawOutput: string,
   runtime: number,
   display: boolean,
 }
@@ -39,14 +33,7 @@ export interface QuestionSubmissionResult {
   cases: CaseMap,
 }
 
-export enum QuestionSubmissionStatus {
-  Initial = 0,
-  FailedToCompile = 1,
-  FailedTests = 2,
-  Pending = 3,
-  Success = 4,
-  SystemError = 5,
-}
+export type QuestionSubmissionStatus = 'initial' | 'failed_to_compile' | 'failed_tests' | 'pending' | 'success' | 'system_error';
 
 export interface QuestionSubmission {
   id: string,
@@ -65,6 +52,7 @@ export enum RunnerStatus {
   SYSTEM_ERROR = 3,
   NO_OP = 4,
 }
+
 
 export interface RunnerOutput {
   rawOutput: string,

@@ -3,6 +3,7 @@ import router from './routes';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import {PsqlDB} from "./storage/db";
+import bodyParser from 'body-parser';
 
 dotenv.config(); // loads environment variables from .env file
 
@@ -21,6 +22,12 @@ async function initDB() {
 }
 
 app.use(cors());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 app.use('/api', router);
 

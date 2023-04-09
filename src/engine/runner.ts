@@ -1,22 +1,14 @@
 import {RunnerOutput, RunnerStatus} from "../models";
 
 class Runner {
-  private file: string;
-  private directory: string;
-  private filename: string;
-  private extension: string;
-  private callback: () => void;
+  protected extension: string;
   protected sourceFile: string;
   protected testFile: string;
 
   constructor() {
-    this.file = "";
-    this.directory = "";
-    this.filename = "";
     this.extension = "";
     this.sourceFile = "";
     this.testFile = "";
-    this.callback = () => {};
   }
 
   public getSourceFile() {

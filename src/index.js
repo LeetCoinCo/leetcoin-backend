@@ -15,7 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const routes_1 = __importDefault(require("./routes"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const cors_1 = __importDefault(require("cors"));
 const db_1 = require("./storage/db");
+const body_parser_1 = __importDefault(require("body-parser"));
 dotenv_1.default.config(); // loads environment variables from .env file
 const app = (0, express_1.default)();
 const port = 8080; // default port to listen
@@ -32,12 +34,17 @@ function initDB() {
         }
     });
 }
+app.use((0, cors_1.default)());
+// parse application/x-www-form-urlencoded
+app.use(body_parser_1.default.urlencoded({ extended: false }));
+// parse application/json
+app.use(body_parser_1.default.json());
 app.use('/api', routes_1.default);
 app.use('/debug', (req, res) => {
     res.send('Hello world!');
 });
-app.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
+app.listen(process.env.PORT || port, () => __awaiter(void 0, void 0, void 0, function* () {
     yield initDB();
-    console.log(`Server started at http://localhost:${port}`);
+    console.log(`Server started at http://localhost:${process.env.PORT || port}`);
 }));
 //# sourceMappingURL=index.js.map

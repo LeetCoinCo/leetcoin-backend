@@ -11,7 +11,7 @@ const ncpPromise = util.promisify(ncp);
 export async function getFile(language: Language): Promise<string> {
   console.log(`[fileApi][getFile], language: ${language}`);
   let file = "";
-  if (language === Language.SUBSTRATE_RUST) {
+  if (language === 'substrate_rust') {
     file = path.join(__dirname, "../templates", "lib.rs");
   } else {
     return "";

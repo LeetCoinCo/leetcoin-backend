@@ -25,4 +25,10 @@ npm run dev
 If you have found any bugs in the code, have any questions,
 comments or ideas for improvements feel free to contact us:
 
-team@leetcode.co
+team@leetcore.co
+
+## 4. Docker
+```
+docker-compose down -v
+docker-compose up --build -d
+```

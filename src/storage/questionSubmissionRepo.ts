@@ -42,7 +42,7 @@ export class QuestionSubmissionRepo {
 
   public async createQuestionSubmission(submission: QuestionSubmission): Promise<QuestionSubmission> {
     const query = `INSERT INTO question_submissions (user_id, question_id, submission, language, status, results) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`;
-    const res = await this.db.execute(query, [submission.userId, submission.questionId, submission.submissionCode, submission.language.toString(), QuestionSubmissionStatus.Initial.toString(), JSON.stringify(submission.results)]);
+    const res = await this.db.execute(query, [submission.userId, submission.questionId, submission.submissionCode, submission.language.toString(), 'initial', JSON.stringify(submission.results)]);
     if (res.rows.length === 0) {
       throw new Error('Failed to create question submission');
     }
@@ -79,15 +79,15 @@ export class QuestionSubmissionRepo {
 }
 
 async function run(questionSubmission: QuestionSubmission, codeSolution: string): Promise<QuestionSubmissionStatus> {
-  const {status, rawOutput} = await RunnerManager.run(questionSubmission.questionId, questionSubmission.language, codeSolution);
+  const {status, rawOutput} = await RunnerManager.run(questionSubmission.id, questionSubmission.questionId, questionSubmission.language, codeSolution);
   if (status === RunnerStatus.SUCCESS) {
-    return QuestionSubmissionStatus.Success;
+    return 'success';
   } else if (status === RunnerStatus.FAILED_TESTS) {
-    return QuestionSubmissionStatus.FailedTests;
+    return 'failed_tests';
   } else if (status === RunnerStatus.FAILED_TO_COMPILE) {
-    return QuestionSubmissionStatus.FailedToCompile;
+    return 'failed_to_compile';
   } else {
-    return QuestionSubmissionStatus.SystemError;
+    return 'system_error';
   }
 }
 

@@ -3,15 +3,9 @@ import Runner from './runner';
 import {RunnerStatus, RunnerOutput} from "../models";
 
 export class SubstrateRustRunner extends Runner {
-  private readonly defaultFile: string;
-
-  public getDefaultFile() {
-    return this.defaultFile;
-  }
 
   constructor() {
     super();
-    this.defaultFile = 'lib.rs';
     this.sourceFile = "lib.rs";
     this.testFile = "lib.rs";
   }
