@@ -106,12 +106,3 @@ VALUES ('9a3e20e6-d704-11ed-afa1-0242ac120002', 'erc20-token', 'ERC-20 Token', '
 
 INSERT INTO questions (id, name, title, description, difficulty, frequency, rating, metadata)
 VALUES ('e2ceeb1a-d704-11ed-afa1-0242ac120002', 'decentralized-oracle', 'Decentralized Oracle', 'Create a decentralized oracle smart contract that allows users to request external data and receive it within the contract. Implement request_data, provide_data, and get_data functions.', 'hard', 15, 5, '{"starterCode": {"substrate_rust": "#[ink::contract]\nmod decentralized_oracle {\n #[ink(storage)]\n pub struct DecentralizedOracle {\n data_requests: ink_prelude::collections::HashMap<String, Balance>,\n data_providers: ink_prelude::collections::HashMap<AccountId, bool>,\n }\n // Add your implementation here\n}\n"}, "codeSolution": {"substrate_rust": "CODE_HERE"}, "category": "Ink!", "tags": ["smart contract", "decentralized oracle"]}');
-
-INSERT INTO questions (id, name, title, description, difficulty, frequency, rating, metadata)
-VALUES ('511843b8-15b8-480a-948c-d6b36cf9ce6d', 'example-question-1', 'Example Question 1', 'This is an example question with an easy difficulty', 'easy', 5, 4, '{"starterCode": {"substrate_rust": "CODE_HERE"}, "codeSolution": {"substrate_rust": "CODE_HERE"}}');
-
-INSERT INTO questions (id, name, title, description, difficulty, frequency, metadata)
-VALUES ('2be06a99-b221-48c8-87a5-ed050653f9cf' ,'example-question-2', 'Example Question 2', 'This is an example question with a medium difficulty', 'medium', 3, '{"category": "data structures", "tags": ["linked lists", "trees"]}');
-
-INSERT INTO questions (id, name, title, description, difficulty, frequency, metadata)
-VALUES ('89f69ece-392f-40bc-96a9-5b5934f2d0a4', 'example-question-3', 'Example Question 3', 'This is an example question with a hard difficulty', 'hard', 1, '{"category": "dynamic programming", "tags": ["memoization", "recursion"]}');
