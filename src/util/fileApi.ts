@@ -65,16 +65,23 @@ export async function saveFile(
 export async function copyFile(source: string, target: string): Promise<void> {
   try {
     console.log(`[fileApi][copyFile], source: ${source}, target: ${target}`);
-    const rd = fs.createReadStream(source);
-    const wr = fs.createWriteStream(target);
-    await pipeline(rd, wr);
-    return;
+    const stat = await fs.promises.stat(source);
+
+    if (stat.isDirectory()) {
+      await fs.promises.mkdir(target, { recursive: true });
+      const entries = await fs.promises.readdir(source, { withFileTypes: true });
+
+      await Promise.all(entries.map((entry) =>
+        copyFile(path.join(source, entry.name), path.join(target, entry.name))
+      ));
+    } else {
+      await fs.promises.copyFile(source, target);
+    }
   } catch (err) {
     console.log(`[fileApi][copyFile], err: ${err}`);
     throw err;
   }
 }
-
 export async function copyDirectory(
   source: string,
   target: string,

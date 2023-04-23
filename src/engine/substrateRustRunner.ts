@@ -11,6 +11,7 @@ export class SubstrateRustRunner extends Runner {
   }
 
   public async run(file: string, directory: string, filename: string, extension: string): Promise<RunnerOutput> {
+    console.log(`[substrateRustRunner][run] file: ${file}, directory: ${directory}, filename: ${filename}, extension: ${extension}`)
     if (extension.toLowerCase() !== ".rs") {
       console.log(`${file} is not a rust file.`);
       return {status: RunnerStatus.NO_OP, rawOutput: ''};
@@ -25,13 +26,9 @@ export class SubstrateRustRunner extends Runner {
 
   // compile a Rust file
   async compile(file: string, directory: string, filename: string): Promise<RunnerOutput> {
+    console.log(`[substrateRustRunner][compile] file: ${file}, directory: ${directory}, filename: ${filename}`)
     const options = {cwd: directory};
     try {
-      const {stdout, stderr} = await spawnAsync('cargo', ['contract', 'build', '--offline', '--output-json', '--quiet'], options);
-      if (stderr !== '') {
-        return {status: RunnerStatus.FAILED_TO_COMPILE, rawOutput: stderr};
-      }
-      console.log(`[substrateRustRunner][compile] stdout: ${stdout}`);
       return await this.execute(directory, filename, options);
     } catch (err) {
       console.log(`[substrateRustRunner][compile] err: ${err}`);
@@ -41,8 +38,9 @@ export class SubstrateRustRunner extends Runner {
 
   // execute the compiled file
   async execute(directory: string, filename: string, options: any): Promise<RunnerOutput> {
+    console.log(`[substrateRustRunner][execute] directory: ${directory}, filename: ${filename}`)
     try {
-      const {stdout, stderr} = await spawnAsync('cargo', ['test', '--offline', '--quiet'], options);
+      const {stdout, stderr} = await spawnAsync('cargo', ['test', '--quiet'], options);
       console.log(`[substrateRustRunner][execute] stdout: ${stdout}`);
       if (stderr !== '') {
         console.log(`[substrateRustRunner][execute] stderr: ${stderr}`);
