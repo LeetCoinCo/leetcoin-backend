@@ -4,6 +4,14 @@ export type Language = 'substrate_rust';
 
 type CodeMap = Record<Language, string>;
 
+export interface User {
+  id: string;
+  address: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
 export interface CodeMetadata {
   starterCode: CodeMap,
   codeSolution: CodeMap,

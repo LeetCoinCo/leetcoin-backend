@@ -39,6 +39,8 @@
   },
   "dependencies": {
     "@expo/spawn-async": "^1.7.0",
+    "@polkadot/api": "^10.5.1",
+    "@polkadot/keyring": "^12.1.1",
     "app-root-path": "^3.1.0",
     "await-spawn": "^4.0.2",
     "body-parser": "^1.20.2",
@@ -48,6 +50,7 @@
     "moment": "^2.29.4",
     "ncp": "^2.0.0",
     "pg": "^8.9.0",
+    "polkadot": "^1.0.0",
     "stream-promise": "^3.2.0",
     "uuid": "^9.0.0"
   }
